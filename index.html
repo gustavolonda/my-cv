@@ -12,39 +12,51 @@
       box-sizing: border-box;
     }
 
+    /* CONFIGURACIÓN CRUCIAL DE IMPRESIÓN */
+    /* CONFIGURACIÓN CRUCIAL DE IMPRESIÓN */
+    @page {
+      size: A4;
+      margin: 0;
+      /* Al establecer el margen en 0, Chrome oculta los encabezados y pies de página automáticos */
+    }
+
+    @page :first {
+      /* La primera página no necesita margen superior para que el header pegue al borde */
+      margin-top: 0mm;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #f4f6f9;
       color: #333;
-      line-height: 1.6;
-      padding: 30px;
+      line-height: 1.4;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .container {
+      width: 100%;
+      background: white;
       max-width: 1100px;
       margin: auto;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
 
     .header {
       background: #1f2937;
       color: white;
-      padding: 40px;
+      padding: 30px 40px;
     }
 
     .header h1 {
-      font-size: 34px;
-      margin-bottom: 10px;
+      font-size: 28px;
+      margin-bottom: 5px;
     }
 
     .header h2 {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: normal;
       color: #d1d5db;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .header h2 a {
@@ -53,122 +65,188 @@
     }
 
     .contact {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      font-size: 14px;
+      font-size: 11px;
+      color: #d1d5db;
+    }
+
+    .contact span,
+    .contact a {
+      display: inline-block;
+      margin-right: 15px;
+      margin-bottom: 4px;
+      color: #d1d5db;
+      text-decoration: none;
     }
 
     .contact a {
       color: #93c5fd;
-      text-decoration: none;
     }
 
-    .content {
-      display: grid;
-      grid-template-columns: 320px 1fr;
+    /* 2. NUEVA ESTRUCTURA ANTIBUGS PARA LAS COLUMNAS */
+    .content-wrapper {
+      width: 100%;
+      position: relative;
+    }
+
+    /* Limpiador de flujos para evitar colapsos visuales */
+    .content-wrapper::after {
+      content: "";
+      display: table;
+      clear: both;
     }
 
     .sidebar {
+      float: left;
+      width: 30%;
       background: #f9fafb;
-      padding: 30px;
+      padding: 25px 20px;
       border-right: 1px solid #e5e7eb;
+      min-height: 100%;
+      /* Asegura consistencia de altura */
+      position: relative;
+      z-index: 5;
     }
 
-    .main {
-      padding: 30px;
+    .main-content {
+      float: left;
+      width: 70%;
+      padding: 25px 35px;
+      background: white;
+      position: relative;
+      z-index: 10;
+      /* Fuerza a que el contenido principal siempre esté arriba de la barra lateral */
     }
 
     .section {
-      margin-bottom: 35px;
+      margin-bottom: 24px;
+      position: relative;
     }
 
     .section h3 {
-      font-size: 20px;
-      margin-bottom: 15px;
+      font-size: 14px;
+      margin-bottom: 12px;
       color: #111827;
-      border-bottom: 2px solid #2563eb;
-      padding-bottom: 8px;
+      border-bottom: 2px solid #1e3a8a;
+      padding-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section p {
+      font-size: 11.5px;
+      color: #4b5563;
     }
 
     .skills-category {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .skills-category strong {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       color: #111827;
+      font-size: 11.5px;
     }
 
     .badge {
       display: inline-block;
       background: #e5e7eb;
       color: #111827;
-      padding: 6px 10px;
-      margin: 4px;
-      border-radius: 6px;
-      font-size: 13px;
+      padding: 3px 7px;
+      margin: 2px;
+      border-radius: 4px;
+      font-size: 10.5px;
     }
 
-    .job {
-      margin-bottom: 28px;
+    /* 3. PROTECCIÓN TOTAL PARA LOS ENLACES */
+    .main-content a,
+    .courses li a,
+    .project a {
+      position: relative;
+      z-index: 50;
+      /* Eleva los links por encima de cualquier cálculo erróneo del PDF */
+      display: inline-block;
+      /* Agranda ligeramente el área reactiva del clic */
+      color: #1e3a8a;
+      text-decoration: none;
+    }
+
+    /* Control estricto de saltos de página sin bucles en el DOM */
+    .job,
+    .project {
+      margin-bottom: 18px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      position: relative;
     }
 
     .job-title {
-      font-size: 18px;
+      font-size: 13.5px;
       font-weight: bold;
       color: #111827;
     }
 
     .job-date {
       color: #6b7280;
-      font-size: 14px;
-      margin-bottom: 10px;
+      font-size: 11px;
+      margin-bottom: 5px;
     }
 
     .job ul {
-      padding-left: 20px;
+      padding-left: 15px;
     }
 
     .job li {
-      margin-bottom: 8px;
+      margin-bottom: 4px;
+      font-size: 11.5px;
+      color: #374151;
     }
 
     .project {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .project a {
-      color: #2563eb;
+      color: #1e3a8a;
       text-decoration: none;
       font-weight: bold;
+      font-size: 12.5px;
+      position: relative;
+      /* Crucial para que respete el z-index */
+      z-index: 10;
+      /* Lo pone por encima de cualquier capa invisible */
     }
 
     .project p {
-      margin-top: 4px;
-      font-size: 14px;
+      margin-top: 2px;
+      font-size: 11.5px;
       color: #4b5563;
     }
 
+    .courses {
+      list-style-type: square;
+      padding-left: 15px;
+    }
+
     .courses li {
-      margin-bottom: 8px;
+      margin-bottom: 4px;
+      font-size: 11px;
+      color: #374151;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .courses li a {
-      color: #2563eb;
+      color: #1e3a8a;
       text-decoration: none;
-      font-weight: bold;
+      position: relative;
+      /* Crucial para que respete el z-index */
+      z-index: 10;
+      /* Lo pone por encima de cualquier capa invisible */
     }
-
-    @media (max-width: 900px) {
-      .content {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
+    @media print {
+      .print-pading{
+        padding-top: 15mm;
       }
     }
   </style>
@@ -178,7 +256,7 @@
   <div class="container">
     <div class="header">
       <h1>Gustavo Israel Londa Muñoz</h1>
-      <h2><a href="https://drive.google.com/file/d/19VX0cQpPl66fPnofypgBoBSDGoJEXfT3/view" target="_blank">Computer
+      <h2><a href="https://drive.google.com/file/d/19VX0cQpPl66fPnofypgBoBSDGoJEXfT3/view">Computer
           Science Engineer</a></h2>
 
       <div class="contact">
@@ -190,7 +268,8 @@
       </div>
     </div>
 
-    <div class="content">
+    <div class="content-wrapper">
+
       <aside class="sidebar">
         <div class="section">
           <h3>Profile</h3>
@@ -241,11 +320,11 @@
           <h3>Education</h3>
           <p><strong>B.S. in Computer Science Engineering</strong></p>
           <p>ESPOL - Escuela Superior Politécnica del Litoral</p>
-          <p>Graduated Oct 2017</p>
+          <p style="color:#6b7280; font-size:11px; margin-top: 2px;">Graduated Oct 2017</p>
         </div>
       </aside>
 
-      <main class="main">
+      <main class="main-content">
         <div class="section">
           <h3>Work Experience</h3>
 
@@ -306,7 +385,7 @@
             </ul>
           </div>
 
-          <div class="job">
+          <div class="job print-pading">
             <div class="job-title">Full Stack Developer | INALAMBRIK</div>
             <div class="job-date">Jan 2020 – Dec 2021</div>
             <ul>
@@ -318,7 +397,6 @@
               <li>Native mobile development for Android and iOS platforms.</li>
               <li>Worked using Scrum methodology and project/task management with Kanban.</li>
               <li>Used Git repositories for version control and collaborative development workflows.</li>
-              <li>Managed version control and collaboration workflows with Git.</li>
             </ul>
           </div>
 
@@ -329,7 +407,7 @@
               <li>Developed backend services using Java and Spring Boot.</li>
               <li>Managed deployments on AWS and Heroku using PostgreSQL.</li>
               <li>Used Git repositories for version control and collaborative development workflows.</li>
-              <li>Maintained code integrity and traceability using Git.</li>
+              <li>Maintained code integrity and traceability</li>
             </ul>
           </div>
 
@@ -390,35 +468,29 @@
           </div>
         </div>
 
-        <div class="section">
+        <div class="section print-pading">
           <h3>Projects</h3>
 
           <div class="project">
-            <a href="https://github.com/gustavolonda/SpringBootWithAuth0KuberneteH2" target="_blank">
-              Spring Boot With Auth0 Kubernetes H2
-            </a>
+            <a href="https://github.com/gustavolonda/SpringBootWithAuth0KuberneteH2" target="_blank">Spring Boot With
+              Auth0 Kubernetes H2</a>
             <p>Secure microservice deployed on Kubernetes using Spring Boot and Auth0.</p>
           </div>
 
           <div class="project">
-            <a href="https://github.com/gustavolonda/SpringBootWithJWTDockerH2" target="_blank">
-              Spring Boot With JWT Docker H2
-            </a>
+            <a href="https://github.com/gustavolonda/SpringBootWithJWTDockerH2" target="_blank">Spring Boot With JWT
+              Docker H2</a>
             <p>REST API with JWT authentication and Docker integration.</p>
           </div>
 
           <div class="project">
-            <a href="https://github.com/gustavolonda/YuGiOhApp" target="_blank">
-              Yu Gi Oh App
-            </a>
+            <a href="https://github.com/gustavolonda/YuGiOhApp" target="_blank">Yu Gi Oh App</a>
             <p>Android mobile application consuming REST APIs.</p>
           </div>
 
           <div class="project">
-            <a href="https://github.com/gustavolonda/chuck_norris_project_test" target="_blank">
-              Chuck Norris Project
-            </a>
-            <p>Backend API project developed with Node.js.</p>
+            <a href="https://github.com/gustavolonda/chuck_norris_project_test" target="_blank">Chuck Norris Project</a>
+            <p>Mobile application consuming REST APIs  with Flutter</p>
           </div>
         </div>
 
@@ -426,180 +498,178 @@
           <h3>Certifications & Courses</h3>
           <ul class="courses">
             <li><a
-                href="https://www.linkedin.com/learning/certificates/8f725db583c2480cf374c4693a97afeddd425be2474a8fe54fd39521b93512c5" target="_blank">Domina
-                Java: Colecciones</a></li>
-            <li><a href="https://www.udemy.com/certificate/UC-93b4fd89-fa67-4720-b77e-f12aab690c0d/">React, Spring y
-                ChatGPT IA: Crea tu primera App Full Stack</a></li>
+                href="https://www.linkedin.com/learning/certificates/8f725db583c2480cf374c4693a97afeddd425be2474a8fe54fd39521b93512c5"
+                target="_blank">Domina Java: Colecciones</a></li>
+            <li><a href="https://www.udemy.com/certificate/UC-93b4fd89-fa67-4720-b77e-f12aab690c0d/"
+                target="_blank">React, Spring y ChatGPT IA: Crea tu primera App Full Stack</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/2f7d81a13d03219e7529387e4a356bd45a664326433d96089d722f20f038ab75" target="_blank" >Spring
-                Boot esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/2f7d81a13d03219e7529387e4a356bd45a664326433d96089d722f20f038ab75"
+                target="_blank">Spring Boot esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/f006d98549000c8fe0b4397567c2a17df859d33c81da392be636dcdf6ec230fb" target="_blank">Desafío
-                de programación: Java</a></li>
-            <li><a href="https://www.crehana.com/diplomas/320d1398/" target="_blank">Fundamentos de Microsoft Azure</a></li>
+                href="https://www.linkedin.com/learning/certificates/f006d98549000c8fe0b4397567c2a17df859d33c81da392be636dcdf6ec230fb"
+                target="_blank">Desafío de programación: Java</a></li>
+            <li><a href="https://www.crehana.com/diplomas/320d1398/" target="_blank">Fundamentos de Microsoft Azure</a>
+            </li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/646a2db436cee560806203d49657ffcca622cb121c3a350d76e2ee9b5d71c740" target="_blank">JavaScript:
-                TDD y pruebas unitarias avanzado</a></li>
-            <li><a href="https://www.udemy.com/certificate/UC-449327c2-5bcf-44cf-94ba-2fc4b59c4d0f" target="_blank">Agentes de IA con
-                n8n: Crea Contenido Automático en tu Sitio</a></li>
+                href="https://www.linkedin.com/learning/certificates/646a2db436cee560806203d49657ffcca622cb121c3a350d76e2ee9b5d71c740"
+                target="_blank">JavaScript: TDD y pruebas unitarias avanzado</a></li>
+            <li><a href="https://www.udemy.com/certificate/UC-449327c2-5bcf-44cf-94ba-2fc4b59c4d0f"
+                target="_blank">Agentes de IA con n8n: Crea Contenido Automático en tu Sitio</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/7ecd2cd97e2ab031edae49f56991a441122bf50c3f70e28a0adf3f12fe55b06d" target="_blank">DevOps
-                esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/7ecd2cd97e2ab031edae49f56991a441122bf50c3f70e28a0adf3f12fe55b06d"
+                target="_blank">DevOps esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/d4951e861b5ffa080c5498fc8c48508e5d24bd2fe44f27167293c6cd47a883af" target="_blank">Domina
-                Java</a></li>
+                href="https://www.linkedin.com/learning/certificates/d4951e861b5ffa080c5498fc8c48508e5d24bd2fe44f27167293c6cd47a883af"
+                target="_blank">Domina Java</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/cb67a6b2c8f0ae3a7ed1b0c3c6a489910945203acc1c759d62d41403d37f0ed4" target="_blank">Fundamentos
-                de AWS Cloud Services</a></li>
+                href="https://www.linkedin.com/learning/certificates/cb67a6b2c8f0ae3a7ed1b0c3c6a489910945203acc1c759d62d41403d37f0ed4"
+                target="_blank">Fundamentos de AWS Cloud Services</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/11621624d2b97fbf35cbc9b86cb3758375bbfd659a089b8f5665caf13d774473" target="_blank">Introducción
-                a AWS: Conceptos de la nube</a></li>
+                href="https://www.linkedin.com/learning/certificates/11621624d2b97fbf35cbc9b86cb3758375bbfd659a089b8f5665caf13d774473"
+                target="_blank">Introducción a AWS: Conceptos de la nube</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/6d0f8a5fbc29293b60d2f4dcd0de011831afb03fb8bfae889f5b07ca45be322f" target="_blank">Java:
-                Open Web Application Security Project (OWASP)</a></li>
+                href="https://www.linkedin.com/learning/certificates/6d0f8a5fbc29293b60d2f4dcd0de011831afb03fb8bfae889f5b07ca45be322f"
+                target="_blank">Java: Open Web Application Security Project (OWASP)</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/3013f91230d15ac1f8017568c4add4382296eff9d9921489fe52c21a895cc119" target="_blank">Quarkus
-                esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/3013f91230d15ac1f8017568c4add4382296eff9d9921489fe52c21a895cc119"
+                target="_blank">Quarkus esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/02587a6a3054d6c6fb01e05ad78324afc090ac153ba8eb0810f8ce65b7846b22" target="_blank">Triunfar
-                en DevOps</a></li>
+                href="https://www.linkedin.com/learning/certificates/02587a6a3054d6c6fb01e05ad78324afc090ac153ba8eb0810f8ce65b7846b22"
+                target="_blank">Triunfar en DevOps</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/0fa8342c9d6cdb9560e7ead962cdc2addf1d5ad8c85e48660324f00a90347df6" target="_blank">Aprende
-                Gemini, la IA de Google</a></li>
+                href="https://www.linkedin.com/learning/certificates/0fa8342c9d6cdb9560e7ead962cdc2addf1d5ad8c85e48660324f00a90347df6"
+                target="_blank">Aprende Gemini, la IA de Google</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/87ae338ed8cf75e20b3b14c31445348078439b553d8fa056a4accaaa8ef01979" target="_blank">NodeJS:
-                RestServer con Clean Architecture</a></li>
+                href="https://www.linkedin.com/learning/certificates/87ae338ed8cf75e20b3b14c31445348078439b553d8fa056a4accaaa8ef01979"
+                target="_blank">NodeJS: RestServer con Clean Architecture</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/868b05337ab9662a4f19f5b2d99c92d51754f8fbf0656ba5e8e3610b2ddb9580" target="_blank">Agile
-                Software Development: Clean Coding Practices</a></li>
+                href="https://www.linkedin.com/learning/certificates/868b05337ab9662a4f19f5b2d99c92d51754f8fbf0656ba5e8e3610b2ddb9580"
+                target="_blank">Agile Software Development: Clean Coding Practices</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/2210ffc1e1e34be21a2f916fedbbb8a1e360863bf4443ab5117a367e5ade4d62" target="_blank">Fundamentos
-                de la ciberseguridad para profesionales IT</a></li>
+                href="https://www.linkedin.com/learning/certificates/2210ffc1e1e34be21a2f916fedbbb8a1e360863bf4443ab5117a367e5ade4d62"
+                target="_blank">Fundamentos de la ciberseguridad para profesionales IT</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/fd7798fa6b02ef105a1ba9f37e044727875a08925b6838230170cb767e2c1228" target="_blank">Azure
-                AZ-900 Prep. Cert.: Microsoft Azure Fundamentals</a></li>
+                href="https://www.linkedin.com/learning/certificates/fd7798fa6b02ef105a1ba9f37e044727875a08925b6838230170cb767e2c1228"
+                target="_blank">Azure AZ-900 Prep. Cert.: Microsoft Azure Fundamentals</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/ee138ec06cf4b5188bd74fe55553d3c83b153d73c7f8d1f54c6e19412c66fd5c" target="_blank">Azure:
-                Fundamentos de seguridad</a></li>
+                href="https://www.linkedin.com/learning/certificates/ee138ec06cf4b5188bd74fe55553d3c83b153d73c7f8d1f54c6e19412c66fd5c"
+                target="_blank">Azure: Fundamentos de seguridad</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/025c943d3ad937418374bcc6ad35100ce5e8ca8622018ad7688a2191314dad5a" target="_blank">Azure:
-                Políticas para DevOps esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/025c943d3ad937418374bcc6ad35100ce5e8ca8622018ad7688a2191314dad5a"
+                target="_blank">Azure: Políticas para DevOps esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/004c5b9bb2dba6147130829d6153e709d06af51cb397eeac04f9108c88f09103" target="_blank">Azure
-                para desarrollo y programación</a></li>
-            <li><a href="https://www.udemy.com/certificate/UC-a75403f0-268d-4d7c-b2ae-57881f6531e8/" target="_blank">React y Spring Boot
-                : Crea tu primera App Full Stack</a></li>
+                href="https://www.linkedin.com/learning/certificates/004c5b9bb2dba6147130829d6153e709d06af51cb397eeac04f9108c88f09103"
+                target="_blank">Azure para desarrollo y programación</a></li>
+            <li><a href="https://www.udemy.com/certificate/UC-a75403f0-268d-4d7c-b2ae-57881f6531e8/"
+                target="_blank">React y Spring Boot : Crea tu primera App Full Stack</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/b582eb043647b14f4f79cf0ac4e74fa1ca646256de448202589b3a47b4e43a1c" target="_blank ">Amazon
-                Web Services para profesionales IT</a></li>
+                href="https://www.linkedin.com/learning/certificates/b582eb043647b14f4f79cf0ac4e74fa1ca646256de448202589b3a47b4e43a1c"
+                target="_blank">Amazon Web Services para profesionales IT</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/bfcb6bbab78736bd78fb5b0404259aa9d69f2e6d860ef1f5a342049267be90fa" target="_blank">Aprende
-                Kubernetes</a></li>
+                href="https://www.linkedin.com/learning/certificates/bfcb6bbab78736bd78fb5b0404259aa9d69f2e6d860ef1f5a342049267be90fa"
+                target="_blank">Aprende Kubernetes</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/2db27f6073a2e298683e8cb6f0e3d3546e00bf0c176cd394f905ee525c62fe42" target="_blank">Domina
-                Java: Test unitarios</a></li>
+                href="https://www.linkedin.com/learning/certificates/2db27f6073a2e298683e8cb6f0e3d3546e00bf0c176cd394f905ee525c62fe42"
+                target="_blank">Domina Java: Test unitarios</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/bd88670696c9f884142492ec2dfde5936df5f2cdd0e56458290c90137a226225" target="_blank">Java
-                EE: Application Servers</a></li>
+                href="https://www.linkedin.com/learning/certificates/bd88670696c9f884142492ec2dfde5936df5f2cdd0e56458290c90137a226225"
+                target="_blank">Java EE: Application Servers</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/231de3b364fdbffe0ee22f102f577214ca1768217115f62c5e8b2ebcc338f79c" target="_blank">Node.js
-                esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/231de3b364fdbffe0ee22f102f577214ca1768217115f62c5e8b2ebcc338f79c"
+                target="_blank">Node.js esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/b24b36f57a8a1ca7c27ac1f0a891b42989a4479db54025a080c0ba4dd389d7d6" target="_blank">Python
-                esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/b24b36f57a8a1ca7c27ac1f0a891b42989a4479db54025a080c0ba4dd389d7d6"
+                target="_blank">Python esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/1bf396b2cecffd66598847a18436903773908b01a4590dcd48af59d9bc5aa9dc?u=92964874" target="_blank">Java:
-                Estructuras básicas esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/1bf396b2cecffd66598847a18436903773908b01a4590dcd48af59d9bc5aa9dc?u=92964874"
+                target="_blank">Java: Estructuras básicas esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/862f4ed7e3a562fa09c9e3e94b3403a35e1fe12cb263389a9f8c74ddf18c71b2" target="_blank">Java:
-                Mapeo objeto-relacional esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/862f4ed7e3a562fa09c9e3e94b3403a35e1fe12cb263389a9f8c74ddf18c71b2"
+                target="_blank">Java: Mapeo objeto-relacional esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/da63e9fde946e9fce4e60d785a6dc6fd4feda6141961feaabebc9cb5e40fb87b" target="_blank">Java:
-                Programación orientada a objetos esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/da63e9fde946e9fce4e60d785a6dc6fd4feda6141961feaabebc9cb5e40fb87b"
+                target="_blank">Java: Programación orientada a objetos esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/ca4f2c85388a638582060c1a8a910d0eba7955a308d37b87a8b9cb51b1c78f57" target="_blank">Java:
-                Servicios web</a></li>
-            <li><a href="https://drive.google.com/file/d/1E0YPH-6MZ-lsouWX218RGLt01qwzdgwp/view?usp=drive_link" target="_blank">MVVM
-                Android</a></li>
+                href="https://www.linkedin.com/learning/certificates/ca4f2c85388a638582060c1a8a910d0eba7955a308d37b87a8b9cb51b1c78f57"
+                target="_blank">Java: Servicios web</a></li>
+            <li><a href="https://drive.google.com/file/d/1E0YPH-6MZ-lsouWX218RGLt01qwzdgwp/view?usp=drive_link"
+                target="_blank">MVVM Android</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/291edc0e6f4a0e023975c439808f5bb2c4b806bd6eeefe0f36a37bff7f229832" target="_blank">Desarrollo
-                Android: Arquitectura avanzado</a></li>
+                href="https://www.linkedin.com/learning/certificates/291edc0e6f4a0e023975c439808f5bb2c4b806bd6eeefe0f36a37bff7f229832"
+                target="_blank">Desarrollo Android: Arquitectura avanzado</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/1cca1b0b14d979799fe2a4f225fb452dcaa11681a34e4b920aaaa08c7d1efe05" target="_blank">Introducción
-                a AWS: Servicios principales</a></li>
+                href="https://www.linkedin.com/learning/certificates/1cca1b0b14d979799fe2a4f225fb452dcaa11681a34e4b920aaaa08c7d1efe05"
+                target="_blank">Introducción a AWS: Servicios principales</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/7eb5179235ed347144b4d56264a3c34cb11b33fb5d9126ff84fcc7fa47c64c49" target="_blank">C#
-                esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/7eb5179235ed347144b4d56264a3c34cb11b33fb5d9126ff84fcc7fa47c64c49"
+                target="_blank">C# esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/3c84798dd93fd61d1f658c959d915755285ac66783be2ec5b349c0d7722236e0" target="_blank">.NET
-                esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/3c84798dd93fd61d1f658c959d915755285ac66783be2ec5b349c0d7722236e0"
+                target="_blank">.NET esencial</a></li>
+            <li class="print-pading"><a
+                href="https://www.linkedin.com/learning/certificates/e3ed70d95a8dc3fc8b7caf7f7eddf66d32b9829fc2a02035c3b35604d1c2f053"
+                target="_blank">Java avanzado 1</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/e3ed70d95a8dc3fc8b7caf7f7eddf66d32b9829fc2a02035c3b35604d1c2f053" target="_blank">Java
-                avanzado 1</a></li>
+                href="https://www.linkedin.com/learning/certificates/7a22a019311cf9f4f18a2d159efcb24b074d6cce62082c809c2b50b0cb596f95"
+                target="_blank">Java avanzado 2</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/7a22a019311cf9f4f18a2d159efcb24b074d6cce62082c809c2b50b0cb596f95" target="_blank">Java
-                avanzado 2</a></li>
+                href="https://www.linkedin.com/learning/certificates/e2757123c5a8627fd45c0fbdd2a2a9620984c7706397ad676f319693eff75982"
+                target="_blank">Java: Trucos</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/e2757123c5a8627fd45c0fbdd2a2a9620984c7706397ad676f319693eff75982" target="_blank">Java:
-                Trucos</a></li>
+                href="https://www.linkedin.com/learning/certificates/7f95be87f55d0de16d7968049b83fb256482b9b936eb005a0d72dbe958d49a80"
+                target="_blank">Android práctico: Mi primera aplicación</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/7f95be87f55d0de16d7968049b83fb256482b9b936eb005a0d72dbe958d49a80" target="_blank">Android
-                práctico: Mi primera aplicación</a></li>
+                href="https://www.linkedin.com/learning/certificates/7908f150ee0e91e44d7309a41daa9f4aea0051ef9656aeba0b425934ef1b6aa8"
+                target="_blank">Desarrollo Android: Arquitectura esencial</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/7908f150ee0e91e44d7309a41daa9f4aea0051ef9656aeba0b425934ef1b6aa8" target="_blank ">Desarrollo
-                Android: Arquitectura esencial</a></li>
+                href="https://www.linkedin.com/learning/certificates/dc4021ca897120b21df493a4cb1ad7a41d3530ecb7aa766f45cb116deb5320e3?trk=backfilled_certificate"
+                target="_blank">Flutter: Part 01 Introduction</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/dc4021ca897120b21df493a4cb1ad7a41d3530ecb7aa766f45cb116deb5320e3?trk=backfilled_certificate" target="_blank">Flutter:
-                Part 01 Introduction</a></li>
+                href="https://www.linkedin.com/learning/certificates/7996fc3f5d1045df06ab2ffe204af493e9c6ea7cfb7e733c49bc34f921b6bf13"
+                target="_blank">Java: Código robusto</a></li>
+            <li><a href="https://drive.google.com/file/d/1MzGbAHVxPn46zZ3W-8fXrS4xhCJ4yOMd/view?usp=sharing"
+                target="_blank">Apache Kafka Essential Training: Getting Started</a></li>
+            <li><a href="https://drive.google.com/file/d/1Uue045PzMUbsn0L9jlff3NHfWIru3spC/view?usp=sharing"
+                target="_blank">Docker esencial</a></li>
+            <li><a href="https://drive.google.com/file/d/1bM5GBcCUxtrsn_bOU_z_yMst8K1Pi5K8/view?usp=sharing"
+                target="_blank">Kubernetes para administradores IT esencial</a></li>
+            <li><a href="https://drive.google.com/file/d/1gz7xd2whESVBocG8X3AvdcLUvYXjfU2I/view?usp=sharing"
+                target="_blank">Arquitectura de software: Patrones esencial</a></li>
+            <li><a href="https://drive.google.com/file/d/1yiWDU5xndjTuMjvRb60CXTULEAucNFdy/view?usp=sharing"
+                target="_blank">DevOps: Despliegue de microservicios con Docker</a></li>
+            <li><a href="https://drive.google.com/file/d/1LNpt05qebbGd7E8AB7qcKY6b4BEdJRyK/view?usp=sharing"
+                target="_blank">Programación Reactiva con Spring Boot 2 y Spring WebFlux</a></li>
+            <li><a href="https://drive.google.com/file/d/1BbyaYPz03lOd6sJ-vUudJPDJ8ckbTh8b/view?usp=sharing"
+                target="_blank">Spring Boot Rest Api and Microservices - Spring cloud</a></li>
+            <li><a href="https://drive.google.com/file/d/1DXfF80foC9dLLPQaqpxEnFk6vKDpif_4/view?usp=sharing"
+                target="_blank">Aprende a programar ¡en cualquier lenguaje!</a></li>
             <li><a
-                href="https://www.linkedin.com/learning/certificates/7996fc3f5d1045df06ab2ffe204af493e9c6ea7cfb7e733c49bc34f921b6bf13" target="_blank">Java:
-                Código robusto</a></li>
-            <li><a href="https://drive.google.com/file/d/1MzGbAHVxPn46zZ3W-8fXrS4xhCJ4yOMd/view?usp=sharing" target="_blank">Apache
-                Kafka Essential Training: Getting Started</a></li>
-            <li><a href="https://drive.google.com/file/d/1Uue045PzMUbsn0L9jlff3NHfWIru3spC/view?usp=sharing" target="_blank">Docker
-                esencial</a></li>
-            <li><a href="https://drive.google.com/file/d/1bM5GBcCUxtrsn_bOU_z_yMst8K1Pi5K8/view?usp=sharing" target="_blank">Kubernetes
-                para administradores IT esencial</a></li>
-            <li><a
-                href="https://drive.google.com/file/d/1gz7xd2whESVBocG8X3AvdcLUvYXjfU2I/view?usp=sharing" target="_blank">Arquitectura
-                de software: Patrones esencial</a></li>
-            <li><a href="https://drive.google.com/file/d/1yiWDU5xndjTuMjvRb60CXTULEAucNFdy/view?usp=sharing" target="_blank">DevOps:
-                Despliegue de microservicios con Docker</a></li>
-            <li><a
-                href="https://drive.google.com/file/d/1LNpt05qebbGd7E8AB7qcKY6b4BEdJRyK/view?usp=sharing" target="_blank">Programación
-                Reactiva con Spring Boot 2 y Spring WebFlux</a></li>
-            <li><a href="https://drive.google.com/file/d/1BbyaYPz03lOd6sJ-vUudJPDJ8ckbTh8b/view?usp=sharing" target="_blank">Spring Boot
-                Rest Api and Microservices - Spring cloud</a></li>
-            <li><a href="https://drive.google.com/file/d/1DXfF80foC9dLLPQaqpxEnFk6vKDpif_4/view?usp=sharing" target="_blank">Aprende a
-                programar ¡en cualquier lenguaje!</a></li>
-            <li><a
-                href="https://www.linkedin.com/learning/certificates/3964c4c61eaaba693624f63613d0d24cdaa36c259e568a513671ed65b13cf4c6?trk=share_certificate #desarrolloágildesoftware." target="_blank">Desarrollo
-                ágil de software</a></li>
-            <li><a href="https://drive.google.com/file/d/1TV3Vh2Vn9y7tWHlO1mih9-QE92xuSEjw/view?usp=sharing" target="_blank">GitHub para
-                programadores</a></li>
-            <li><a href="https://drive.google.com/file/d/1m9sLPQjJUxf8zf8sJIOe7b1amCZFaxYq/view?usp=sharing" target="_blank"> «Building
-                React and ASP.NET MVC 5 Applications» de Kazi Nasrat Ali</a></li>
-            <li><a href="https://drive.google.com/file/d/1E-7CHg94pXeBQmeiZ9zZSI4TXnsWbLmP/view?usp=sharing" target="_blank">Android:
-                Migración de Java a Kotlin</a></li>
-            <li><a href="https://drive.google.com/file/d/15AMJ9MxUxxkQGviyItMnqJjJCE91dQoP/view?usp=sharing" target="_blank">DevOps con
-                un café</a></li>
-            <li><a href="https://drive.google.com/file/d/1LlspGI8OAwnBtPoLed5tXu2fQzM2vdeq/view?usp=sharing" target="_blank">Objective-C
-                esencial</a></li>
-            <li><a href="https://drive.google.com/file/d/1Jog8UkgWk69pC_EX2FfR7Aju2sFJvFI_/view?usp=sharing" target="_blank">Swift 5
-                esencial</a></li>
-            <li><a href="https://drive.google.com/file/d/1GGDz7FuBgPIKh69-IEWp0za7Vu6lENZV/view?usp=sharing" target="_blank">5 pasos
-                para convertirte en un Data Scientist</a></li>
-            <li><a href="http://bit.ly/GustavoUdemyReactNative" target="_blank">Introducción a React Native con React Navigation y Axios
-              </a></li>
-            <li><a href="https://drive.google.com/file/d/1tR0o8ofFx9Ct-6pCLKu9xptqcaWK_iVm/view?usp=sharing" target="_blank">Curso
-                GeneXus 16 - Nivel Junior</a></li>
-            <li><a href="https://drive.google.com/file/d/1R1cZrY4kYv93io0vdrDl_jPfMJYt7ctP/view?usp=sharing" target="_blank">EVALUACION
-                DOCENTE EXAMEN &quot;ANALISTA JUNIOR GENEXUS 16&quot;</a></li>
-            <li><a href="https://drive.google.com/file/d/1CmApEUM0DtQFHOpxLYxpgUr3nByF76lp/view?usp=sharing" target="_blank">Gestión de
-                proyectos: Resolución de problemas</a></li>
-            <li><a href="https://drive.google.com/file/d/1Tu0_LOLiZa1lv2D2otFT0g5gVFXtqMnw/view?usp=sharing" target="_blank">Curso de
-                Desarrollo de Apps Móviles</a></li>
-
+                href="https://www.linkedin.com/learning/certificates/3964c4c61eaaba693624f63613d0d24cdaa36c259e568a513671ed65b13cf4c6?trk=share_certificate"
+                target="_blank">Desarrollo ágil de software</a></li>
+            <li><a href="https://drive.google.com/file/d/1TV3Vh2Vn9y7tWHlO1mih9-QE92xuSEjw/view?usp=sharing"
+                target="_blank">GitHub para programadores</a></li>
+            <li><a href="https://drive.google.com/file/d/1m9sLPQjJUxf8zf8sJIOe7b1amCZFaxYq/view?usp=sharing"
+                target="_blank">«Building React and ASP.NET MVC 5 Applications» de Kazi Nasrat Ali</a></li>
+            <li><a href="https://drive.google.com/file/d/1E-7CHg94pXeBQmeiZ9zZSI4TXnsWbLmP/view?usp=sharing"
+                target="_blank">Android: Migración de Java a Kotlin</a></li>
+            <li><a href="https://drive.google.com/file/d/15AMJ9MxUxxkQGviyItMnqJjJCE91dQoP/view?usp=sharing"
+                target="_blank">DevOps con un café</a></li>
+            <li><a href="https://drive.google.com/file/d/1LlspGI8OAwnBtPoLed5tXu2fQzM2vdeq/view?usp=sharing"
+                target="_blank">Objective-C esencial</a></li>
+            <li><a href="https://drive.google.com/file/d/1Jog8UkgWk69pC_EX2FfR7Aju2sFJvFI_/view?usp=sharing"
+                target="_blank">Swift 5 esencial</a></li>
+            <li><a href="https://drive.google.com/file/d/1GGDz7FuBgPIKh69-IEWp0za7Vu6lENZV/view?usp=sharing"
+                target="_blank">5 pasos para convertirte en un Data Scientist</a></li>
+            <li><a href="http://bit.ly/GustavoUdemyReactNative" target="_blank">Introducción a React Native con React
+                Navigation y Axios</a></li>
+            <li><a href="https://drive.google.com/file/d/1tR0o8ofFx9Ct-6pCLKu9xptqcaWK_iVm/view?usp=sharing"
+                target="_blank">Curso GeneXus 16 - Nivel Junior</a></li>
+            <li><a href="https://drive.google.com/file/d/1R1cZrY4kYv93io0vdrDl_jPfMJYt7ctP/view?usp=sharing"
+                target="_blank">EVALUACION DOCENTE EXAMEN "ANALISTA JUNIOR GENEXUS 16"</a></li>
+            <li><a href="https://drive.google.com/file/d/1CmApEUM0DtQFHOpxLYxpgUr3nByF76lp/view?usp=sharing"
+                target="_blank">Gestión de proyectos: Resolución de problemas</a></li>
+            <li><a href="https://drive.google.com/file/d/1Tu0_LOLiZa1lv2D2otFT0g5gVFXtqMnw/view?usp=sharing"
+                target="_blank">Curso de Desarrollo de Apps Móviles</a></li>
           </ul>
         </div>
       </main>
